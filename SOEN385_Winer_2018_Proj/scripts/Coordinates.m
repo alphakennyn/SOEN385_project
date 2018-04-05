@@ -6,10 +6,10 @@ classdef Coordinates < matlab.mixin.SetGet
     end
     
     methods
-        function obj = Coordinates(x,y,z)
-            obj.x = x;
-            obj.y = y;
-            obj.z = z;
+        function obj = Coordinates(xNew,yNew,zNew)
+            obj.x = xNew;
+            obj.y = yNew;
+            obj.z = zNew;
             %obj = obj.setCoordinates(x,y,z);
         end
         %{

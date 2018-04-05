@@ -1,6 +1,6 @@
 function stars = stars() 
     %Generates an array of 3 integer representing the coordination of the "stars"
-    starArray = zeros(100);
+    starArray = [];
     for index = 1:100
         starArray = [getRandomCoord starArray];
     end
