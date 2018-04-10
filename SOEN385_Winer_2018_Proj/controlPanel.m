@@ -213,14 +213,14 @@ function pushbutton7_Callback(hObject, eventdata, handles)
     t=str2double(get(handles.edit7,'String'));
     if(and(p~=0, i~=0))
         if(d~=0)
-            blk = tunablePID('questionA','PID', str2double(t));
+            blk = tunablePID('pidblock','PID', str2double(t));
             blk.Kp.Value = p;        % initialize Kp to p
             blk.Ki.Value = i;        % initialize Ki to i
             blk.Kd.Value = d;        % initialize Kd to d
             blk.Tf.Value = t;
             blk.Tf.Free = false;
         else
-            blk = tunablePID('questionA','PI', t);
+            blk = tunablePID('piblock','PI', t);
             blk.Kp.Value = p;        % initialize Kp to p
             blk.Ki.Value = i;        % initialize Ki to i
             blk.Tf.Value = t;
@@ -229,7 +229,7 @@ function pushbutton7_Callback(hObject, eventdata, handles)
     end
     if(and(p~=0, d~=0))
         if(i==0)
-            blk = tunablePID('questionA','PD', t);
+            blk = tunablePID('pdblock','PD', t);
             blk.Kp.Value = p;        % initialize Kp to p
             blk.Kd.Value = d;        % initialize Kd to d
             blk.Tf.Value = t;
@@ -238,7 +238,7 @@ function pushbutton7_Callback(hObject, eventdata, handles)
     end
     if(and(p~=0, i==0))
         if(d==0)
-            blk = tunablePID('questionA','P', t);
+            blk = tunablePID('pblock','P', t);
             blk.Kp.Value = p;        % initialize Kp to p
             blk.Tf.Value = t;
             blk.Tf.Free = false;
