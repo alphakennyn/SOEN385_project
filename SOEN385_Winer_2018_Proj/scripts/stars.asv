@@ -6,16 +6,17 @@ function stars = stars()
     formatSpec = '%d %d';
     sizeA = [3 Inf];
     starsArr = fscanf(fileID,formatSpec,sizeA);
+    sortedArr = starsArrTrans2( [2:3] , : ); % remove first column/row from array
+    starsArrTrans = starsArr'; % translated into 100x2 matrix
     fclose(fileID);
-    
-    starsArrRemovedRow = starsArr( [2:3] , : ); % remove first column/row from array
-    starsArr2 = phitheta2azel(starsArrRemovedRow); % turn phi theta angles into azimuth elevation angles
-    
-    starsArrTrans = starsArr2'; % translated into 100x2 matrix
     
     %Sort array by second column
     [~,idx] = sort(starsArrTrans(:,2)); % sort just the first row
-    stars = starsArrTrans(idx,:)'; % sort the whole matrix using the sort indices
+    starsArrTrans2 = starsArrTrans(idx,:)'; % sort the whole matrix using the sort indices
+    
+    
+    stars = phitheta2azel(sortedArr); % turn phi theta angles into azimuth elevation angles
+    
     
     
     %Generates an array of 3 integer representing the coordination of the "stars"
