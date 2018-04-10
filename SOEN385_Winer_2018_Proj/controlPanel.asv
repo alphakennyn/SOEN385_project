@@ -207,41 +207,42 @@ function pushbutton7_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     load_system('questionA');
-    p=str2double(get(handles.edit4,'String'));
-    i=str2double(get(handles.edit5,'String'));
-    d=str2double(get(handles.edit6,'String'));
-    t=str2double(get(handles.edit7,'String'));
+    p=get(handles.edit4,'String');
+    i=get(handles.edit5,'String');
+    d=get(handles.edit6,'String');
+    t=get(handles.edit7,'String');
     if(and(p~=0, i~=0))
         if(d~=0)
-            blk = tunablePID('pidblock','PID', str2double(t));
-            blk.Kp.Value = p;        % initialize Kp to p
-            blk.Ki.Value = i;        % initialize Ki to i
-            blk.Kd.Value = d;        % initialize Kd to d
-            blk.Tf.Value = t;
+            blk = tunablePID('questionA','PID', str2double(t));
+            blk.Kp.Value = str2double(p);        % initialize Kp to p
+            blk.Ki.Value = str2double(i);        % initialize Ki to i
+            blk.Kd.Value = str2double(d);        % initialize Kd to d
+            blk.Tf.Value = str2double(t);
             blk.Tf.Free = false;
         else
-            blk = tunablePID('piblock','PI', t);
-            blk.Kp.Value = p;        % initialize Kp to p
-            blk.Ki.Value = i;        % initialize Ki to i
-            blk.Tf.Value = t;
+            blk = tunablePID('questionA','PI', str2double(t));
+            blk.Kp.Value = str2double(p);        % initialize Kp to p
+            blk.Ki.Value = str2double(i);        % initialize Ki to i
+            blk.Tf.Value = str2double(t);
             blk.Tf.Free = false;
         end
     end
     if(and(p~=0, d~=0))
         if(i==0)
-            blk = tunablePID('pdblock','PD', t);
-            blk.Kp.Value = p;        % initialize Kp to p
-            blk.Kd.Value = d;        % initialize Kd to d
-            blk.Tf.Value = t;
+            blk = tunablePID('questionA','PD', str2double(t));
+            blk.Kp.Value = str2double(p);        % initialize Kp to p
+            blk.Kd.Value = str2double(d);        % initialize Kd to d
+            blk.Tf.Value = str2double(t);
             blk.Tf.Free = false;
         end
     end
     if(and(p~=0, i==0))
         if(d==0)
-            blk = tunablePID('pblock','P', t);
-            blk.Kp.Value = p;        % initialize Kp to p
-            blk.Tf.Value = t;
+            blk = tunablePID('questionA','P', str2double(t));
+            blk.Kp.Value = str2double(p);        % initialize Kp to p
+            blk.Tf.Value = str2double(t);
             blk.Tf.Free = false;
-        end
+    else
+        disp('please enter a value to obtain results from the controller')
     end
-    disp(pid(blk));
+    %disp(pid(blk));
