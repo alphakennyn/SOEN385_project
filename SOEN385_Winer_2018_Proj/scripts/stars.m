@@ -1,5 +1,4 @@
 function stars = stars() 
-    %Get star coordinates from txt file
     %Path currently hardcoded. With the workspace saved, we should no
     %longer need this class
     filePath = 'C:\Users\zephi\Documents\385_Project\SOEN385_project\SOEN385_Winer_2018_Proj\Datafile_StarLocationsForTelescopProject.txt';
@@ -10,8 +9,14 @@ function stars = stars()
     starsArrTrans = starsArr';
     %stars = starArray';
     fclose(fileID);
+    
+    %Sort array by second column
     [~,idx] = sort(starsArrTrans(:,2)); % sort just the first row
-    stars = starsArrTrans(idx,:)';   % sort the whole matrix using the sort indices
+    starsArrTrans2 = starsArrTrans(idx,:)'; % sort the whole matrix using the sort indices
+    sortedArr = starsArrTrans2( [2:3] , : ); % remove first column/row from array
+    stars = phitheta2azel(sortedArr); % turn phi theta angles into azimuth elevation angles
+    
+    
     
     %Generates an array of 3 integer representing the coordination of the "stars"
     %{
