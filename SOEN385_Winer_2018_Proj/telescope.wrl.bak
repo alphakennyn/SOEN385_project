@@ -2,9 +2,14 @@
 
 DEF Axis Transform {
   translation 3 0 0
-  center 0 1 0
-  children Cylinder {
-    radius 0.25
-    height 3
-  }
+  rotation 0 90 0 0
+  center 0 -1 0
+  children [
+    Cylinder {
+      radius 0.25
+      height 3
+    }
+    DirectionalLight {
+    }
+  ]
 }
