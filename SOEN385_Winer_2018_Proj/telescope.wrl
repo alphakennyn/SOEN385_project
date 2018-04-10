@@ -2,7 +2,8 @@
 
 DEF Axis Transform {
   translation 3 0 0
-  center 0 1 0
+  rotation 0 0 0 0
+  center 0 -1 0
   children [
     Cylinder {
       radius 0.25
