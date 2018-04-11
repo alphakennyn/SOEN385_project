@@ -91,8 +91,14 @@ function partAbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to partAbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+    thetaValue = guidata('ThetaInput');
+    thetaValue = get(handles.edi
+    phiValue = guidata('PhiInput');
+    set_param('questionA/Constant', 'Constant value', thetaValue);
+    set_param('questionA/COnstant1', 'Constant value', phiValue);
+    %uisave({thetaValue,phiValue},'coordinateValues');
     model = 'questionA';
-    load_a_model(model)
+    load_a_model(model);
 
 % --- Executes on button press in partBbutton.
 function partBbutton_Callback(hObject, eventdata, handles)
@@ -262,6 +268,9 @@ function ThetaInput_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of ThetaInput as text
 thetaValue = str2double(get(hObject,'String')); % returns contents of ThetaInput as a double
 
+% Save the new theta value
+handles.thetaValue = thetaValue;
+guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
 function ThetaInput_CreateFcn(hObject, eventdata, handles)
@@ -283,8 +292,11 @@ function PhiInput_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hints: get(hObject,'String') returns contents of PhiInput as text
-%        str2double(get(hObject,'String')) returns contents of PhiInput as a double
+phiValue = str2double(get(hObject,'String')); % returns contents of PhiInput as a double
 
+% Save the new theta value
+handles.phiValue = phiValue;
+guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
 function PhiInput_CreateFcn(hObject, eventdata, handles)
