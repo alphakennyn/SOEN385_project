@@ -102,8 +102,8 @@ function partAbutton_Callback(hObject, eventdata, handles)
 
     %thetaValue = str2double(thetaVal);
     %phiValue = str2double(phiVal);
-    set_param('questionA/Constant', 'value', num2str(thetaValue));
-    set_param('questionA/Constant1', 'value', num2str(phiValue));
+    set_param('questionA/Constant1', 'value', num2str(thetaValue));
+    set_param('questionA/Constant', 'value', num2str(phiValue));
     %uisave({thetaValue,phiValue},'coordinateValues');
     
 
