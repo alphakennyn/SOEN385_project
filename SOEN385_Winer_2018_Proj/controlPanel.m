@@ -75,16 +75,6 @@ varargout{1} = handles.output;
 
 
 clc;
-
-
-function load_a_model(model)
-    if(bdIsLoaded(model))
-          sim(model)  
-    else    
-        open(model);
-        load_system(model)
-        sim(model)
-    end
     
 % --- Executes on button press in partAbutton.
 function partAbutton_Callback(hObject, eventdata, handles)
@@ -92,8 +82,7 @@ function partAbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     model = 'questionA';
-    open(model);
-    load_system(model);
+    open_and_load_system(model)
     %thetaValue = guidata('ThetaInput');
     %phiValue = guidata('PhiInput');
     phiValue = handles.PhiInput;
@@ -106,6 +95,47 @@ function partAbutton_Callback(hObject, eventdata, handles)
     set_param('questionA/Constant', 'value', num2str(phiValue));
     %uisave({thetaValue,phiValue},'coordinateValues');
     
+    %getting user inputs for PID values and Time delayed
+    p=get(handles.Pvalue,'String');
+    i=get(handles.Ivalue,'String');
+    d=get(handles.Dvalue,'String');
+    t=get(handles.Tvalue,'String');
+    %determining which controller to use
+    if(and(str2double(p)~=0, str2double(i)~=0))
+        if(str2double(d)~=0)
+            blk = tunablePID('pidblock','PID', str2double(t));
+            set_param('questionA/PID Controller','P', p);
+            set_param('questionA/PID Controller1','P', p);
+            set_param('questionA/PID Controller','I', i);
+            set_param('questionA/PID Controller1','I', i);
+            set_param('questionA/PID Controller','D', d);
+            set_param('questionA/PID Controller1','D', d);
+        else
+            blk = tunablePID('piblock','PI', str2double(t));
+            set_param('questionA/PID Controller','P', p);
+            set_param('questionA/PID Controller1','P', p);
+            set_param('questionA/PID Controller','I', i);
+            set_param('questionA/PID Controller1','I', i);
+        end
+    end
+    
+    if(and(str2double(p)~=0, str2double(d)~=0))
+        if(str2double(i)==0)
+            blk = tunablePID('pdblock','PD', str2double(t));
+            set_param('questionA/PID Controller','P', p);
+            set_param('questionA/PID Controller1','P', p);
+            set_param('questionA/PID Controller','D', d);
+            set_param('questionA/PID Controller1','D', d);
+        end
+    end
+    if(and(str2double(p)~=0, str2double(i)==0))
+        if(str2double(d)==0)
+            blk = tunablePID('pblock','P', str2double(t));
+            set_param('questionA/PID Controller','P', p);
+            set_param('questionA/PID Controller1','P', p);
+        end
+    end
+    sim(model);
 
 % --- Executes on button press in partBbutton.
 function partBbutton_Callback(hObject, eventdata, handles)
@@ -113,7 +143,60 @@ function partBbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     model = 'questionB';
-    load_a_model(model)
+    open_and_load_system(model)
+    %thetaValue = guidata('ThetaInput');
+    %phiValue = guidata('PhiInput');
+    phiValue = handles.PhiInput;
+    thetaValue = handles.ThetaInput;
+    guidata(hObject, handles);
+
+    %thetaValue = str2double(thetaVal);
+    %phiValue = str2double(phiVal);
+    set_param('questionB/Constant1', 'value', num2str(thetaValue));
+    set_param('questionB/Constant', 'value', num2str(phiValue));
+    %uisave({thetaValue,phiValue},'coordinateValues');
+    
+    %getting user inputs for PID values and Time delayed
+    p=get(handles.Pvalue,'String');
+    i=get(handles.Ivalue,'String');
+    d=get(handles.Dvalue,'String');
+    t=get(handles.Tvalue,'String');
+    %determining which controller to use
+    if(and(str2double(p)~=0, str2double(i)~=0))
+        if(str2double(d)~=0)
+            blk = tunablePID('pidblock','PID', str2double(t));
+            set_param('questionB/PID Controller','P', p);
+            set_param('questionB/PID Controller2','P', p);
+            set_param('questionB/PID Controller','I', i);
+            set_param('questionB/PID Controller2','I', i);
+            set_param('questionB/PID Controller','D', d);
+            set_param('questionB/PID Controller2','D', d);
+        else
+            blk = tunablePID('piblock','PI', str2double(t));
+            set_param('questionB/PID Controller','P', p);
+            set_param('questionB/PID Controller2','P', p);
+            set_param('questionB/PID Controller','I', i);
+            set_param('questionB/PID Controller2','I', i);
+        end
+    end
+    
+    if(and(str2double(p)~=0, str2double(d)~=0))
+        if(str2double(i)==0)
+            blk = tunablePID('pdblock','PD', str2double(t));
+            set_param('questionB/PID Controller','P', p);
+            set_param('questionB/PID Controller2','P', p);
+            set_param('questionB/PID Controller','D', d);
+            set_param('questionB/PID Controller2','D', d);
+        end
+    end
+    if(and(str2double(p)~=0, str2double(i)==0))
+        if(str2double(d)==0)
+            blk = tunablePID('pblock','P', str2double(t));
+            set_param('questionB/PID Controller','P', p);
+            set_param('questionB/PID Controller2','P', p);
+        end
+    end
+    sim(model);
     
 
 % --- Executes on button press in partCbutton.
@@ -122,7 +205,60 @@ function partCbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     model = 'questionC';
-    load_a_model(model);
+    open_and_load_system(model)
+    %thetaValue = guidata('ThetaInput');
+    %phiValue = guidata('PhiInput');
+    phiValue = handles.PhiInput;
+    thetaValue = handles.ThetaInput;
+    guidata(hObject, handles);
+
+    %thetaValue = str2double(thetaVal);
+    %phiValue = str2double(phiVal);
+    set_param('questionC/Constant1', 'value', num2str(thetaValue));
+    set_param('questionC/Constant', 'value', num2str(phiValue));
+    %uisave({thetaValue,phiValue},'coordinateValues');
+    
+    %getting user inputs for PID values and Time delayed
+    p=get(handles.Pvalue,'String');
+    i=get(handles.Ivalue,'String');
+    d=get(handles.Dvalue,'String');
+    t=get(handles.Tvalue,'String');
+    %determining which controller to use
+    if(and(str2double(p)~=0, str2double(i)~=0))
+        if(str2double(d)~=0)
+            blk = tunablePID('pidblock','PID', str2double(t));
+            set_param('questionC/PID Controller1','P', p);
+            set_param('questionC/PID Controller2','P', p);
+            set_param('questionC/PID Controller1','I', i);
+            set_param('questionC/PID Controller2','I', i);
+            set_param('questionC/PID Controller1','D', d);
+            set_param('questionC/PID Controller2','D', d);
+        else
+            blk = tunablePID('piblock','PI', str2double(t));
+            set_param('questionC/PID Controller1','P', p);
+            set_param('questionC/PID Controller2','P', p);
+            set_param('questionC/PID Controller1','I', i);
+            set_param('questionC/PID Controller2','I', i);
+        end
+    end
+    
+    if(and(str2double(p)~=0, str2double(d)~=0))
+        if(str2double(i)==0)
+            blk = tunablePID('pdblock','PD', str2double(t));
+            set_param('questionC/PID Controller1','P', p);
+            set_param('questionC/PID Controller2','P', p);
+            set_param('questionC/PID Controller1','D', d);
+            set_param('questionC/PID Controller2','D', d);
+        end
+    end
+    if(and(str2double(p)~=0, str2double(i)==0))
+        if(str2double(d)==0)
+            blk = tunablePID('pblock','P', str2double(t));
+            set_param('questionC/PID Controller1','P', p);
+            set_param('questionC/PID Controller2','P', p);
+        end
+    end
+    sim(model);
 
 
 
@@ -216,61 +352,11 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
+function open_and_load_system(model)
+    open_system(model);
+    load_system(model);
+    
 
-% --- Executes on button press in SubmitButton.
-function SubmitButton_Callback(hObject, eventdata, handles)
-% hObject    handle to SubmitButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-    open_system('questionA');
-    load_system('questionA');
-    p=get(handles.edit4,'String');
-    i=get(handles.edit5,'String');
-    d=get(handles.edit6,'String');
-    t=get(handles.edit7,'String');
-    if(and(str2double(p)~=0, str2double(i)~=0))
-        if(str2double(d)~=0)
-            blk = tunablePID('pidblock','PID', str2double(t));
-            blk.Kp.Value = str2double(p);        % initialize Kp to p
-            blk.Ki.Value = str2double(i);        % initialize Ki to i
-            blk.Kd.Value = str2double(d);        % initialize Kd to d
-            blk.Tf.Value = str2double(t);
-            set_param('questionA/PID Controller','P', p);
-            set_param('questionA/PID Controller','I', i);
-            set_param('questionA/PID Controller','D', d);
-            blk.Tf.Free = false;
-        else
-            blk = tunablePID('piblock','PI', str2double(t));
-            blk.Kp.Value = str2double(p);        % initialize Kp to p
-            blk.Ki.Value = str2double(i);        % initialize Ki to i
-            blk.Tf.Value = str2double(t);
-            set_param('questionA/PID Controller','P', p);
-            set_param('questionA/PID Controller','I', i);
-            blk.Tf.Free = false;
-        end
-    end
-    if(and(str2double(p)~=0, str2double(d)~=0))
-        if(str2double(i)==0)
-            blk = tunablePID('pdblock','PD', str2double(t));
-            blk.Kp.Value = str2double(p);        % initialize Kp to p
-            blk.Kd.Value = str2double(d);        % initialize Kd to d
-            blk.Tf.Value = str2double(t);
-            set_param('questionA/PID Controller','P', p);
-            set_param('questionA/PID Controller','D', d);
-            blk.Tf.Free = false;
-        end
-    end
-    if(and(str2double(p)~=0, str2double(i)==0))
-        if(str2double(d)==0)
-            blk = tunablePID('pblock','P', str2double(t));
-            blk.Kp.Value = str2double(p);        % initialize Kp to p
-            blk.Tf.Value = str2double(t);
-            blk.Tf.Free = false;
-            set_param('questionA/PID Controller','P', p);
-            %disp(P_Gain_Val);
-        end
-    end
-    disp(pid(blk));
 
 
 
